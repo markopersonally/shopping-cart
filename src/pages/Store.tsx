@@ -1,16 +1,11 @@
 import { useState, useEffect } from "react";
+import { Col, Row } from "react-bootstrap";
+import StoreItem from "../components/StoreItem";
+import { StoreItemProps } from "../components/StoreItem";
 import { PRODUCTS } from "../data/data";
-import { Col, Container, Row } from "react-bootstrap";
-
-export type Product = {
-  id: number;
-  title: string;
-  price: number;
-  images: string[];
-};
 
 export default function Store() {
-  const [products, setProducts] = useState<Product[]>([]);
+  const [products, setProducts] = useState<StoreItemProps[]>([]);
 
   useEffect(() => {
     setTimeout(() => {
@@ -28,7 +23,11 @@ export default function Store() {
       <h1>Store</h1>
       <Row md={2} xs={1} lg={3} className="g-3">
         {products.length > 0 ? (
-          products.map((product) => <Col key={product.id}>{product.title}</Col>)
+          products.map((product) => (
+            <Col key={product.id}>
+              <StoreItem {...product} />
+            </Col>
+          ))
         ) : (
           <p>Loading products...</p>
         )}
