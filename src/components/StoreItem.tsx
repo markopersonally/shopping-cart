@@ -1,4 +1,5 @@
 import { Button, Card } from "react-bootstrap";
+import { useShoppingCart } from "../context/ShoppingCartContext";
 
 export type StoreItemProps = {
   id: number;
@@ -10,7 +11,13 @@ export type StoreItemProps = {
 
 export default function StoreItem(props: StoreItemProps): JSX.Element {
   const { id, title, price, images } = props;
-  const quantity = 0;
+  const {
+    getItemQuantity,
+    increaseCartQuantity,
+    decreaseCartQuantity,
+    deleteFromCart,
+  } = useShoppingCart();
+  const quantity = getItemQuantity(id);
 
   return (
     <Card key={id} className="h-100">
@@ -20,7 +27,11 @@ export default function StoreItem(props: StoreItemProps): JSX.Element {
         <Card.Text>${price}</Card.Text>
         <div className="mt-auto">
           {quantity === 0 ? (
-            <Button variant="outline-dark" className="w-100">
+            <Button
+              onClick={() => increaseCartQuantity(id)}
+              variant="outline-dark"
+              className="w-100"
+            >
               + Add to Cart
             </Button>
           ) : (
@@ -32,11 +43,26 @@ export default function StoreItem(props: StoreItemProps): JSX.Element {
                 className="d-flex align-items-center justify-content-center"
                 style={{ gap: ".5rem" }}
               >
-                <Button variant="outline-warning">-</Button>
+                <Button
+                  onClick={() => decreaseCartQuantity(id)}
+                  variant="outline-warning"
+                >
+                  -
+                </Button>
                 <div className="fs-4">{quantity}</div>
-                <Button variant="outline-success">+</Button>
+                <Button
+                  onClick={() => increaseCartQuantity(id)}
+                  variant="outline-success"
+                >
+                  +
+                </Button>
               </div>
-              <Button variant="outline-danger">Delete</Button>
+              <Button
+                onClick={() => deleteFromCart(id)}
+                variant="outline-danger"
+              >
+                Delete
+              </Button>
             </div>
           )}
         </div>
