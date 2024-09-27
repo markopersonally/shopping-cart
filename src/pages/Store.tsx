@@ -19,7 +19,7 @@ export default function Store() {
 
   return (
     <>
-      <h1>Store</h1>
+      <h1 className="m-5 text-center">Store</h1>
       <Row md={2} xs={1} lg={3} className="g-3">
         {products.length > 0 ? (
           products.map((product) => (
