@@ -13,6 +13,7 @@ export default function Store() {
         .then((res) => res.json())
         .then((data) => {
           setProducts(data);
+          console.log(data)
         });
     }, 500);
   }, []);

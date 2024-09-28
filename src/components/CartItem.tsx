@@ -1,7 +1,7 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Button, Stack } from "react-bootstrap";
 import { useShoppingCart } from "../context/ShoppingCartContext";
-import { StoreItemProps } from "./StoreItem.tsx";
+import { StoreItemProps } from "./StoreItem";
 import { PRODUCTS } from "../data/data";
 
 type CartItemProps = {
@@ -10,7 +10,8 @@ type CartItemProps = {
 };
 
 export default function CartItem({ id, quantity }: CartItemProps) {
-  const { deleteFromCart } = useShoppingCart();
+  const { increaseCartQuantity, decreaseCartQuantity, deleteFromCart } =
+    useShoppingCart();
   const [item, setItem] = useState<StoreItemProps | null>(null);
 
   useEffect(() => {
@@ -25,23 +26,37 @@ export default function CartItem({ id, quantity }: CartItemProps) {
   return (
     <Stack direction="horizontal" gap={2} className="d-flex align-items-center">
       <img
-        src={item.images[0]}
+        src={item.image}
         style={{ width: "125px", height: "75px", objectFit: "cover" }}
         alt={item.title}
       />
       <div className="me-auto">
-        <div>
-          {item.title}
-          {quantity > 1 && (
-            <span className="text-muted" style={{ fontSize: ".65rem" }}>
-              {quantity}x
-            </span>
-          )}
-        </div>
+        {item.title}
+
         <div className="text-muted" style={{ fontSize: ".75rem" }}>
-          {item.price}
+          ${item.price.toFixed(2)}
         </div>
-        <p>Price: ${item.price * quantity}</p>
+      </div>
+      <div style={{ display: "flex", gap: "5px" }}>
+        {quantity > 1 && (
+          <span className="text-danger" style={{ fontSize: "1rem" }}>
+            {quantity}x
+          </span>
+        )}
+        <Button
+          variant="outline-secondary"
+          size="sm"
+          onClick={() => increaseCartQuantity(id)}
+        >
+          +
+        </Button>
+        <Button
+          variant="outline-secondary"
+          size="sm"
+          onClick={() => decreaseCartQuantity(id)}
+        >
+          -
+        </Button>
       </div>
       <Button onClick={() => deleteFromCart(id)} variant="outline-danger">
         x

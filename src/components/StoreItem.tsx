@@ -6,11 +6,11 @@ export type StoreItemProps = {
   title: string;
   price: number;
   description: string;
-  images: string[];
+  image: string;
 };
 
 export default function StoreItem(props: StoreItemProps): JSX.Element {
-  const { id, title, price, images } = props;
+  const { id, title, price, image } = props;
   const {
     getItemQuantity,
     increaseCartQuantity,
@@ -21,8 +21,13 @@ export default function StoreItem(props: StoreItemProps): JSX.Element {
 
   return (
     <Card key={id} className="h-100">
-      <Card.Img variant="top" src={images[0]} alt={title} />
-      <Card.Body>
+      <Card.Img
+        variant="top"
+        src={image}
+        alt={title}
+        style={{ padding: "15px", height: "400px" }}
+      />
+      <Card.Body className="text-center">
         <Card.Title>{title}</Card.Title>
         <Card.Text>${price}</Card.Text>
         <div className="mt-auto">
