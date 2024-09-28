@@ -25,7 +25,7 @@ export default function CartItem({ id, quantity }: CartItemProps) {
   return (
     <Stack direction="horizontal" gap={2} className="d-flex align-items-center">
       <img
-        src={item.images[0]}
+        src={item.image}
         style={{ width: "125px", height: "75px", objectFit: "cover" }}
         alt={item.title}
       />
