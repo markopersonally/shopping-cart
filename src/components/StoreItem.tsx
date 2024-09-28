@@ -21,8 +21,13 @@ export default function StoreItem(props: StoreItemProps): JSX.Element {
 
   return (
     <Card key={id} className="h-100">
-      <Card.Img variant="top" src={image} alt={title} />
-      <Card.Body>
+      <Card.Img
+        variant="top"
+        src={image}
+        alt={title}
+        style={{ padding: "15px", height: "400px" }}
+      />
+      <Card.Body className="text-center">
         <Card.Title>{title}</Card.Title>
         <Card.Text>${price}</Card.Text>
         <div className="mt-auto">
