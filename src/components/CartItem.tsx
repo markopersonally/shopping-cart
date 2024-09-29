@@ -23,6 +23,8 @@ export default function CartItem({ id, quantity }: CartItemProps) {
 
   if (!item) return null;
 
+  const total = item.price * quantity;
+
   return (
     <Stack direction="horizontal" gap={2} className="d-flex align-items-center">
       <img
@@ -34,7 +36,7 @@ export default function CartItem({ id, quantity }: CartItemProps) {
         {item.title}
 
         <div className="text-muted" style={{ fontSize: ".75rem" }}>
-          ${item.price.toFixed(2)}
+          ${total}
         </div>
       </div>
       <div style={{ display: "flex", gap: "5px" }}>
