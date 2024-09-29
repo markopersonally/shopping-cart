@@ -23,7 +23,7 @@ export default function CartItem({ id, quantity }: CartItemProps) {
 
   if (!item) return null;
 
-  const total = item.price * quantity;
+  const totalItem = item.price * quantity;
 
   return (
     <Stack direction="horizontal" gap={2} className="d-flex align-items-center">
@@ -34,9 +34,8 @@ export default function CartItem({ id, quantity }: CartItemProps) {
       />
       <div className="me-auto">
         {item.title}
-
         <div className="text-muted" style={{ fontSize: ".75rem" }}>
-          ${total}
+          ${totalItem}
         </div>
       </div>
       <div style={{ display: "flex", gap: "5px" }}>

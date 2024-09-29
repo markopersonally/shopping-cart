@@ -1,5 +1,13 @@
-import { createContext, ReactNode, useContext, useState } from "react";
+import {
+  createContext,
+  ReactNode,
+  useContext,
+  useState,
+  useEffect,
+} from "react";
 import ShoppingCart from "../components/ShoppingCart";
+import { StoreItemProps } from "../components/StoreItem";
+import { PRODUCTS } from "../data/data";
 
 type ShoppingCartContextProps = {
   children: ReactNode;
@@ -7,7 +15,6 @@ type ShoppingCartContextProps = {
 
 type CartItem = {
   id: number;
-  //   title: string;
   quantity: number;
 };
 
@@ -20,6 +27,7 @@ type ShoppingCartContext = {
   deleteFromCart: (id: number) => void;
   cartQuantity: number;
   cartItems: CartItem[];
+  totalPrice: number;
 };
 
 const ShoppingCartContext = createContext({} as ShoppingCartContext);
@@ -31,6 +39,7 @@ export function useShoppingCart() {
 export function ShoppingCartProvider({ children }: ShoppingCartContextProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
+  const [itemsData, setItemsData] = useState<StoreItemProps[]>([]);
 
   const cartQuantity = cartItems.reduce(
     (quantity, item) => item.quantity + quantity,
@@ -40,9 +49,17 @@ export function ShoppingCartProvider({ children }: ShoppingCartContextProps) {
   const openCart = () => setIsOpen(true);
   const closeCart = () => setIsOpen(false);
 
+  useEffect(() => {
+    fetch(PRODUCTS)
+      .then((res) => res.json())
+      .then((data: StoreItemProps[]) => setItemsData(data))
+      .catch(() => console.log("Error fetching products"));
+  }, []);
+
   function getItemQuantity(id: number) {
     return cartItems.find((item) => item.id === id)?.quantity || 0;
   }
+
   function increaseCartQuantity(id: number) {
     setCartItems((currItems) => {
       if (currItems.find((item) => item.id === id) == null) {
@@ -58,6 +75,7 @@ export function ShoppingCartProvider({ children }: ShoppingCartContextProps) {
       }
     });
   }
+
   function decreaseCartQuantity(id: number) {
     setCartItems((currItems) => {
       if (currItems.find((item) => item.id === id)?.quantity === 1) {
@@ -73,11 +91,17 @@ export function ShoppingCartProvider({ children }: ShoppingCartContextProps) {
       }
     });
   }
+
   function deleteFromCart(id: number) {
     setCartItems((currItems) => {
       return currItems.filter((item) => item.id !== id);
     });
   }
+
+  const totalPrice = cartItems.reduce((total, cartItem) => {
+    const item = itemsData.find((data) => data.id === cartItem.id);
+    return total + (item ? item.price * cartItem.quantity : 0);
+  }, 0);
 
   return (
     <ShoppingCartContext.Provider
@@ -90,6 +114,7 @@ export function ShoppingCartProvider({ children }: ShoppingCartContextProps) {
         closeCart,
         cartItems,
         cartQuantity,
+        totalPrice,
       }}
     >
       {children}

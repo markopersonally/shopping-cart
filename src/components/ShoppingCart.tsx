@@ -7,7 +7,7 @@ type ShoppingCartProps = {
 };
 
 export default function ShoppingCart({ isOpen }: ShoppingCartProps) {
-  const { closeCart, cartItems } = useShoppingCart();
+  const { closeCart, cartItems, totalPrice } = useShoppingCart();
 
   return (
     <Offcanvas show={isOpen} onHide={closeCart} placement="end">
@@ -20,6 +20,9 @@ export default function ShoppingCart({ isOpen }: ShoppingCartProps) {
             <CartItem key={item.id} {...item} />
           ))}
         </Stack>
+        <div className="mt-4">
+          <h3>Total Price: ${totalPrice.toFixed(2)}</h3>
+        </div>
       </Offcanvas.Body>
     </Offcanvas>
   );
